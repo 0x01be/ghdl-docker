@@ -1,13 +1,12 @@
-ARG VERSION v0.37.0
-
 FROM alpine:3.12.0 as builder
+ENV VERSION v0.37.0
 
 RUN apk add --no-cache --virtual build-dependencies \
     git \
     build-base \
-    gcc-gnat
-RUN apk add libexecinfo-dev
-RUN apk add zlib-dev
+    gcc-gnat \
+    libexecinfo-dev \
+    zlib-dev
 
 RUN git clone --depth 1 --branch $VERSION https://github.com/ghdl/ghdl /ghdl
 
