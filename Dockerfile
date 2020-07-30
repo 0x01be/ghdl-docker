@@ -23,3 +23,5 @@ FROM alpine:3.12.0
 
 COPY --from=builder /opt/ghdl/ /opt/ghdl/
 
+ENV PATH $PATH:/opt/ghdl/bin/
+
