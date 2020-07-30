@@ -16,12 +16,13 @@ RUN git clone --depth 1 --branch $VERSION https://github.com/ghdl/ghdl /ghdl
 WORKDIR /ghdl
 
 RUN ./configure --prefix=/opt/ghdl
-RUN make
-RUN make install
+# FIXME
+#RUN make
+#RUN make install
 
-FROM alpine:3.12.0
+#FROM alpine:3.12.0
 
-COPY --from=builder /opt/ghdl/ /opt/ghdl/
+#COPY --from=builder /opt/ghdl/ /opt/ghdl/
 
-ENV PATH $PATH:/opt/ghdl/bin/
+#ENV PATH $PATH:/opt/ghdl/bin/
 
