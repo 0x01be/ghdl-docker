@@ -1,26 +1,26 @@
-FROM alpine:3.12.0 as builder
-ENV VERSION v0.37.0
+FROM alpine as build
 
-RUN apk add --no-cache --virtual build-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+RUN apk add --no-cache --virtual ghdl-build-dependencies \
     git \
     build-base \
     gcc-gnat \
     libexecinfo-dev \
     zlib-dev
 
-RUN git clone --depth 1 --branch $VERSION https://github.com/ghdl/ghdl /ghdl
+ENV GHDL_REVISION v0.37.0
+RUN git clone --depth 1 --branch ${GHDL_REVISION} https://github.com/ghdl/ghdl /ghdl
 
 WORKDIR /ghdl
 
 RUN ./configure --prefix=/opt/ghdl
-# FIXME
-#RUN make
-#RUN make install
 
-#FROM alpine:3.12.0
+# No backtrace support on alpine
+RUN sed -i.bak 's/#include <sys\/ucontext.h>//g' /ghdl/src/grt/config/jumps.c
+RUN sed -i.bak 's/#define HAVE_BACKTRACE 1//g' /ghdl/src/grt/config/jumps.c
+RUN make
+RUN make install
+
+#FROM alpine
 
 #COPY --from=builder /opt/ghdl/ /opt/ghdl/
 
