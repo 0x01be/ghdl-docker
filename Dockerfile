@@ -20,9 +20,19 @@ RUN sed -i.bak 's/#define HAVE_BACKTRACE 1//g' /ghdl/src/grt/config/jumps.c
 RUN make
 RUN make install
 
-#FROM alpine
+FROM alpine
 
-#COPY --from=builder /opt/ghdl/ /opt/ghdl/
+COPY --from=build /opt/ghdl/ /opt/ghdl/
 
-#ENV PATH $PATH:/opt/ghdl/bin/
+RUN apk add --no-cache --virtual ghdl-runtime-dependencies \
+    libstdc++ \
+    libgnat
+
+ENV PATH $PATH:/opt/ghdl/bin/
+
+RUN adduser -D -u 1000 ghdl
+WORKDIR /workspace
+RUN chown ghdl:ghdl /workspace
+
+USER ghdl
 
