@@ -7,7 +7,7 @@ RUN apk add --no-cache --virtual ghdl-build-dependencies \
     libexecinfo-dev \
     zlib-dev
 
-ENV GHDL_REVISION v0.37.0
+ENV GHDL_REVISION master
 RUN git clone --depth 1 --branch ${GHDL_REVISION} https://github.com/ghdl/ghdl /ghdl
 
 WORKDIR /ghdl
